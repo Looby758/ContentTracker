@@ -1,0 +1,16 @@
+[
+    {
+        "Title": "John Wick",
+        "Type": "Movie",
+        "Platform": "Apple TV",
+        "Watched": true,
+        "Rating": "8"
+    },
+    {
+        "Title": "John Wick 2",
+        "Type": "Movie",
+        "Platform": "Apple TV",
+        "Watched": true,
+        "Rating": "8"
+    }
+]
