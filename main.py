@@ -79,28 +79,29 @@ class MediaTrackerGUI:
         self.root = root
         self.root.title("Media Tracker")
         self.root.geometry("900x700")
-        self.root.configure(bg='#f0f0f0')
         
-        # Set up window close handler
-        self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
+        # Ensure window is visible
+        self.root.deiconify()
+        self.root.lift()
+        self.root.focus_force()
         
         # Configure theme colors
-        self.bg_color = '#f0f0f0'
-        self.accent_color = '#4a90e2'
-        self.text_color = '#333333'
-        self.success_color = '#4CAF50'
-        self.error_color = '#f44336'
+        self.bg_color = 'white'
+        self.accent_color = '#007AFF'  # macOS blue
+        self.text_color = 'black'
+        self.success_color = '#34C759'  # macOS green
+        self.error_color = '#FF3B30'    # macOS red
         
         # Configure style
         self.style = ttk.Style()
-        self.style.theme_use('clam')
+        self.style.theme_use('default')  # Use default theme
         
         # Configure styles
         self.style.configure('TFrame', background=self.bg_color)
-        self.style.configure('TLabel', background=self.bg_color, foreground=self.text_color, font=('Segoe UI', 10))
-        self.style.configure('TButton', background=self.accent_color, foreground='white', font=('Segoe UI', 10))
-        self.style.configure('TEntry', fieldbackground='white', font=('Segoe UI', 10))
-        self.style.configure('TCombobox', fieldbackground='white', font=('Segoe UI', 10))
+        self.style.configure('TLabel', background=self.bg_color, foreground=self.text_color, font=('Helvetica', 10))
+        self.style.configure('TButton', background=self.accent_color, foreground='white', font=('Helvetica', 10))
+        self.style.configure('TEntry', fieldbackground='white', font=('Helvetica', 10))
+        self.style.configure('TCombobox', fieldbackground='white', font=('Helvetica', 10))
         self.style.configure('TNotebook', background=self.bg_color)
         self.style.configure('TNotebook.Tab', background=self.bg_color, padding=[10, 5])
         self.style.map('TButton', background=[('active', self.accent_color)])
@@ -109,16 +110,16 @@ class MediaTrackerGUI:
         
         # Create main frame
         self.main_frame = ttk.Frame(root, padding="20")
-        self.main_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        self.main_frame.pack(fill=tk.BOTH, expand=True)
         
         # Create header
         header_frame = ttk.Frame(self.main_frame)
-        header_frame.grid(row=0, column=0, columnspan=2, pady=(0, 20))
-        ttk.Label(header_frame, text="Media Tracker", font=('Segoe UI', 24, 'bold')).pack()
+        header_frame.pack(fill=tk.X, pady=(0, 20))
+        ttk.Label(header_frame, text="Media Tracker", font=('Helvetica', 24, 'bold')).pack()
         
         # Create notebook for tabs
         self.notebook = ttk.Notebook(self.main_frame)
-        self.notebook.grid(row=1, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N, tk.S))
+        self.notebook.pack(fill=tk.BOTH, expand=True)
         
         # Add Media Tab
         self.add_tab = ttk.Frame(self.notebook, padding="20")
@@ -170,42 +171,41 @@ class MediaTrackerGUI:
 
     def setup_add_tab(self):
         # Title
-        ttk.Label(self.add_tab, text="Title:", font=('Segoe UI', 11)).grid(row=0, column=0, sticky=tk.W, pady=(0, 10))
+        ttk.Label(self.add_tab, text="Title:", font=('Helvetica', 11)).grid(row=0, column=0, sticky=tk.W, pady=(0, 10))
         self.title_entry = self.create_styled_entry(self.add_tab)
         self.title_entry.grid(row=0, column=1, sticky=(tk.W, tk.E), pady=(0, 10))
         
         # Type
-        ttk.Label(self.add_tab, text="Type:", font=('Segoe UI', 11)).grid(row=1, column=0, sticky=tk.W, pady=(0, 10))
+        ttk.Label(self.add_tab, text="Type:", font=('Helvetica', 11)).grid(row=1, column=0, sticky=tk.W, pady=(0, 10))
         self.type_var = tk.StringVar()
-        self.type_combo = ttk.Combobox(self.add_tab, textvariable=self.type_var, values=["Movie", "Tv"], width=37)
+        self.type_combo = ttk.Combobox(self.add_tab, textvariable=self.type_var, values=["Movie", "TV Show"], width=37)
         self.type_combo.grid(row=1, column=1, sticky=(tk.W, tk.E), pady=(0, 10))
         
         # Platform
-        ttk.Label(self.add_tab, text="Platform:", font=('Segoe UI', 11)).grid(row=2, column=0, sticky=tk.W, pady=(0, 10))
+        ttk.Label(self.add_tab, text="Platform:", font=('Helvetica', 11)).grid(row=2, column=0, sticky=tk.W, pady=(0, 10))
         self.platform_var = tk.StringVar()
         self.platform_combo = ttk.Combobox(self.add_tab, textvariable=self.platform_var, 
                                          values=["Netflix", "Amazon", "Hulu", "Disney+", "Apple TV"], width=37)
         self.platform_combo.grid(row=2, column=1, sticky=(tk.W, tk.E), pady=(0, 10))
-
+        
         # Rating
-        ttk.Label(self.add_tab, text="Rating (1-10):", font=('Segoe UI', 11)).grid(row=3, column=0, sticky=tk.W, pady=(0, 10))
+        ttk.Label(self.add_tab, text="Rating (1-10):", font=('Helvetica', 11)).grid(row=3, column=0, sticky=tk.W, pady=(0, 10))
         self.add_rating_var = tk.StringVar()
         self.add_rating_combo = ttk.Combobox(self.add_tab, textvariable=self.add_rating_var, 
                                            values=["Not Rated", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"], width=37)
         self.add_rating_combo.grid(row=3, column=1, sticky=(tk.W, tk.E), pady=(0, 10))
         self.add_rating_combo.set("Not Rated")
-
+        
         # Watched Status
         self.watched_var = tk.BooleanVar()
         self.watched_check = ttk.Checkbutton(self.add_tab, text="Mark as Watched", 
-                                           variable=self.watched_var, style='TCheckbutton',
-                                           command=self.toggle_watch_date)
+                                           variable=self.watched_var, command=self.toggle_watch_date)
         self.watched_check.grid(row=4, column=0, columnspan=2, pady=(0, 10))
-
+        
         # Watch Date
         self.watch_date_frame = ttk.Frame(self.add_tab)
         self.watch_date_frame.grid(row=5, column=0, columnspan=2, sticky=tk.W, pady=(0, 10))
-        ttk.Label(self.watch_date_frame, text="Watch Date:", font=('Segoe UI', 11)).pack(side=tk.LEFT, padx=(0, 10))
+        ttk.Label(self.watch_date_frame, text="Watch Date:", font=('Helvetica', 11)).pack(side=tk.LEFT, padx=(0, 10))
         self.watch_date_cal = DateEntry(self.watch_date_frame, width=12, background='darkblue',
                                       foreground='white', borderwidth=2, date_pattern='yyyy-mm-dd')
         self.watch_date_cal.pack(side=tk.LEFT)
@@ -216,12 +216,12 @@ class MediaTrackerGUI:
 
     def setup_rate_tab(self):
         # Title
-        ttk.Label(self.rate_tab, text="Title:", font=('Segoe UI', 11)).grid(row=0, column=0, sticky=tk.W, pady=(0, 10))
+        ttk.Label(self.rate_tab, text="Title:", font=('Helvetica', 11)).grid(row=0, column=0, sticky=tk.W, pady=(0, 10))
         self.rate_title_entry = self.create_styled_entry(self.rate_tab)
         self.rate_title_entry.grid(row=0, column=1, sticky=(tk.W, tk.E), pady=(0, 10))
         
         # Rating
-        ttk.Label(self.rate_tab, text="Rating (1-10):", font=('Segoe UI', 11)).grid(row=1, column=0, sticky=tk.W, pady=(0, 10))
+        ttk.Label(self.rate_tab, text="Rating (1-10):", font=('Helvetica', 11)).grid(row=1, column=0, sticky=tk.W, pady=(0, 10))
         self.rating_var = tk.StringVar()
         self.rating_combo = ttk.Combobox(self.rate_tab, textvariable=self.rating_var, 
                                        values=["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"], width=37)
@@ -232,12 +232,12 @@ class MediaTrackerGUI:
 
     def setup_watch_tab(self):
         # Title
-        ttk.Label(self.watch_tab, text="Title:", font=('Segoe UI', 11)).grid(row=0, column=0, sticky=tk.W, pady=(0, 10))
+        ttk.Label(self.watch_tab, text="Title:", font=('Helvetica', 11)).grid(row=0, column=0, sticky=tk.W, pady=(0, 10))
         self.watch_title_entry = self.create_styled_entry(self.watch_tab)
         self.watch_title_entry.grid(row=0, column=1, sticky=(tk.W, tk.E), pady=(0, 10))
 
         # Watch Date
-        ttk.Label(self.watch_tab, text="Watch Date:", font=('Segoe UI', 11)).grid(row=1, column=0, sticky=tk.W, pady=(0, 10))
+        ttk.Label(self.watch_tab, text="Watch Date:", font=('Helvetica', 11)).grid(row=1, column=0, sticky=tk.W, pady=(0, 10))
         self.watch_tab_date_cal = DateEntry(self.watch_tab, width=12, background='darkblue',
                                           foreground='white', borderwidth=2, date_pattern='yyyy-mm-dd')
         self.watch_tab_date_cal.grid(row=1, column=1, sticky=tk.W, pady=(0, 10))
@@ -248,12 +248,12 @@ class MediaTrackerGUI:
     def toggle_watch_date(self):
         if self.watched_var.get():
             self.watch_date_frame.grid()
-            else:
+        else:
             self.watch_date_frame.grid_remove()
 
     def setup_search_tab(self):
         # Title
-        ttk.Label(self.search_tab, text="Title:", font=('Segoe UI', 11)).grid(row=0, column=0, sticky=tk.W, pady=(0, 10))
+        ttk.Label(self.search_tab, text="Title:", font=('Helvetica', 11)).grid(row=0, column=0, sticky=tk.W, pady=(0, 10))
         self.search_title_entry = self.create_styled_entry(self.search_tab)
         self.search_title_entry.grid(row=0, column=1, sticky=(tk.W, tk.E), pady=(0, 10))
         
@@ -355,9 +355,43 @@ class MediaTrackerGUI:
                 self.list_result.insert(tk.END, "-" * 50 + "\n")
 
 def main():
+    print("Starting application...")
     root = tk.Tk()
-    app = MediaTrackerGUI(root)
+    print("Tk root created")
+    
+    # Set up the window
+    root.title("Media Tracker")
+    root.geometry("900x700")
+    
+    # Create a simple frame
+    main_frame = ttk.Frame(root, padding="20")
+    main_frame.pack(fill=tk.BOTH, expand=True)
+    
+    # Create a simple label
+    label = ttk.Label(main_frame, text="Media Tracker", font=('Helvetica', 24, 'bold'))
+    label.pack(pady=20)
+    
+    # Create a simple button
+    button = ttk.Button(main_frame, text="Test Button", command=lambda: print("Button clicked"))
+    button.pack(pady=20)
+    
+    # Create a simple entry
+    entry = ttk.Entry(main_frame, width=40)
+    entry.pack(pady=20)
+    
+    # Create a simple combobox
+    combo = ttk.Combobox(main_frame, values=["Option 1", "Option 2", "Option 3"], width=37)
+    combo.pack(pady=20)
+    
+    # Make sure the window is visible
+    root.deiconify()
+    root.lift()
+    root.focus_force()
+    
+    # Start the event loop
+    print("Starting mainloop...")
     root.mainloop()
+    print("Mainloop ended")
 
 if __name__ == "__main__":
     main()
